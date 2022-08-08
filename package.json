@@ -1,0 +1,22 @@
+{
+  "name": "batched-img-save",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Chrome Extension to save all images opened as tabs as .zip file in one clcik",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "codegen": "node scripts/codegen.mjs"
+  },
+  "keywords": [],
+  "author": "Larissa Rosalene <lerarosalene@outlook.com>",
+  "license": "MIT",
+  "dependencies": {
+    "base64-js": "^1.5.1",
+    "esbuild": "^0.14.53",
+    "jszip": "^3.10.1",
+    "mustache": "^4.2.0",
+    "protobufjs": "^7.0.0",
+    "protobufjs-cli": "^1.0.0",
+    "yaml": "^2.1.1"
+  }
+}

@@ -1,0 +1,27 @@
+manifest_version: 3
+name: "Batch Images Saver"
+version: "{{ & version }}"
+author: "{{ & author }}"
+
+background:
+  service_worker: background.js
+
+content_scripts:
+  - matches:
+      - "*://*/*"
+    js:
+      - content.js
+
+host_permissions:
+  - "*://*/*"
+
+action:
+  default_icon:
+    96: icon-96x96.png
+
+icons:
+  48: icon-48x48.png
+  96: icon-96x96.png
+
+permissions:
+  - downloads

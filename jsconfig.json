@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "proto/*": ["src/__generated/*"]
+    },
+    "baseUrl": "."
+  }
+}

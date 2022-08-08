@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+message ImageResult {
+  bytes data = 1;
+  string name = 2;
+}
+
+message Message {
+  oneof type {
+    bool imageRequest = 1;
+    ImageResult imageResult = 2;
+  }
+}
