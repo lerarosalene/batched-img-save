@@ -14,7 +14,10 @@ function handleMessage(data, _, respond) {
     return true;
   }
 
-  const isImageTab = mainImage.src === window.location.href;
+  const isImageTab = mainImage.src === window.location.href
+    && document.body.children.length === 1
+    && document.body.firstElementChild === mainImage;
+
   if (!isImageTab) {
     respond(null);
     return true;
