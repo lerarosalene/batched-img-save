@@ -22,13 +22,14 @@ async function main() {
   }
 
   const releaseNotes = `release: ${releaseTag}`;
-  const artifacts = (await readdir('release-artifacts'))
-    .map(item => join('release-artifacts', item));
 
   await promisify(exec)('npm ci');
   await promisify(exec)('npm run codegen');
   await promisify(exec)('npm run build');
   await promisify(exec)('npm run package');
+
+  const artifacts = (await readdir('release-artifacts'))
+    .map(item => join('release-artifacts', item));
 
   await gh('release', 'create', releaseTag, ...artifacts, '--notes', releaseNotes);
 }
