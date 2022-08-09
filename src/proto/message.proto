@@ -15,5 +15,6 @@ message Message {
     bool imageRequest = 1;
     ImageResult imageResult = 2;
     ImageList imageList = 3;
+    bool listRequest = 4;
   }
 }

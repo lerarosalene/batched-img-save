@@ -21,7 +21,7 @@ async function background() {
   await build({
     entryPoints: [join('src', 'background.js')],
     bundle: true,
-    // minify: true,
+    minify: true,
     outfile: join('dist', 'background.js'),
   });
 }
@@ -72,6 +72,7 @@ async function ui() {
   await build({
     entryPoints: [join('src', 'ui.js')],
     bundle: true,
+    minify: true,
     outfile: join('dist', 'ui.js'),
     loader: {
       ".js": "jsx"
