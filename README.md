@@ -1,4 +1,4 @@
-# Batched images saver
+# Batch images saver
 
 Chrome extension to download all images opened as tabs in one archive in one click
 
