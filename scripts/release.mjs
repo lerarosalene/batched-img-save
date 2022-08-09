@@ -15,11 +15,11 @@ async function listReleases() {
 
 async function build(browser) {
   await promisify(exec)('npm run build', {
-    env: { BROWSER: browser }
+    env: { ...process.env, BROWSER: browser }
   });
 
   await promisify(exec)('npm run package', {
-    env: { BROWSER: browser }
+    env: { ...process.env, BROWSER: browser }
   });
 }
 

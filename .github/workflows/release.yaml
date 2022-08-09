@@ -14,4 +14,4 @@ jobs:
       - run: npm run release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # NODE_ENV: production
+          NODE_ENV: production
