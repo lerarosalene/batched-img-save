@@ -12,10 +12,19 @@ const Image = observer(props => {
     store.changeName(id, evt.target.value);
   }, [id]);
 
+  const handleDelete = useCallback(() => {
+    store.delete(id);
+  }, [id]);
+
   return (
     <div className="image">
       <div className="image__cover-container">
-        <img src={url} className="image__cover" />
+        <div className="image__cover-inner-container">
+          <img src={url} className="image__cover" />
+          <div className="image__delete-button-container" onClick={handleDelete}>
+            <div className="image__delete-button" />
+          </div>
+        </div>
       </div>
       <input className="image__name" value={image.name} onChange={handleNameChange} />
     </div>

@@ -1,5 +1,5 @@
-import JSZip from "jszip";
 import { decode, encode } from "./message";
+import { findSafeName } from "./common";
 
 async function sendTabRequest(tabId) {
   try {
@@ -18,37 +18,6 @@ async function sendTabRequest(tabId) {
     return result;
   } catch (error) {
     return error;
-  }
-}
-
-function findSafeName(name, knownNames) {
-  if (!knownNames.has(name)) {
-    knownNames.add(name);
-    return name;
-  }
-
-  let rexp = /^(.*)(\.[^\.]*)$/;
-  let match = name.match(rexp);
-  let base, ext;
-
-  if (match) {
-    base = match[1];
-    ext = match[2];
-  } else {
-    base = name;
-    ext = "";
-  }
-
-  let suffixNum = 1;
-  while (knownNames.has(createName(base, ext, suffixNum))) {
-    suffixNum += 1;
-  }
-
-  knownNames.add(createName(base, ext, suffixNum));
-  return createName(base, ext, suffixNum);
-
-  function createName(base, ext, suffixNum) {
-    return `${base}-${suffixNum}${ext}`;
   }
 }
 
@@ -93,8 +62,8 @@ chrome.runtime.onConnect.addListener(port => {
 });
 
 async function handleClicked() {
-  const interfaceTab = await chrome.tabs.create({
-    url: chrome.runtime.getURL('interface.html')
+  await chrome.tabs.create({
+    url: chrome.runtime.getURL('ui.html')
   });
   const tabs = await chrome.tabs.query({ currentWindow: true });
 
@@ -102,16 +71,31 @@ async function handleClicked() {
     tabs.map(tab => sendTabRequest(tab.id))
   );
 
-  const message = {
-    imageList: {
-      images: responses.map(r => r.imageResult).filter(r => r)
+  let images = [];
+  let knownNames = new Set();
+
+  for (let response of responses) {
+    if (response.type !== 'imageResult') {
+      continue;
     }
+
+    const { name, data, mime } = response.imageResult;
+    const finalName = findSafeName(name, knownNames);
+
+    images.push({
+      name: finalName,
+      mime,
+      data
+    });
+  }
+
+  const message = {
+    imageList: { images }
   };
 
   buffer.add(encode(message));
 
   // let archive = new JSZip();
-  // let knownNames = new Set();
   
   // for (let response of responses) {
   //   if (response.type !== 'imageResult') {

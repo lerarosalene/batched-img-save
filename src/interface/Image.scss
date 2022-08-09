@@ -13,6 +13,34 @@
     justify-content: center;
   }
 
+  &__cover-inner-container {
+    position: relative;
+  }
+
+  &__delete-button-container {
+    border-radius: 4px;
+    padding: 4px;
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    cursor: pointer;
+
+    background-color: #fff;
+    &:hover {
+      background-color: #ccc;
+    }
+  }
+
+  &__delete-button {
+    width: 16px;
+    height: 16px;
+
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url("delete.svg");
+  }
+
   &__name {
     margin-top: 8px;
   }

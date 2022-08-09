@@ -29,6 +29,8 @@ class Store {
       initialized: observable,
       images: computed,
       setImages: action.bound,
+      changeName: action.bound,
+      delete: action.bound,
     });
   }
 
@@ -59,6 +61,11 @@ class Store {
     }
 
     img.name = name;
+  }
+
+  delete(id) {
+    delete this.imagesById[id];
+    this.imageIds = this.imageIds.filter(storedId => storedId !== id);
   }
 }
 

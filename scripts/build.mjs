@@ -21,7 +21,7 @@ async function background() {
   await build({
     entryPoints: [join('src', 'background.js')],
     bundle: true,
-    minify: true,
+    // minify: true,
     outfile: join('dist', 'background.js'),
   });
 }
@@ -64,15 +64,15 @@ async function assets() {
   ])
 }
 
-async function page() {
-  await copyFile(join('src', 'interface.html'), join('dist', 'interface.html'));
-  const result = sass.compile(join('src', 'interface.scss'));
-  await writeFile(join('dist', 'interface.css'), result.css);
+async function ui() {
+  await copyFile(join('src', 'ui.html'), join('dist', 'ui.html'));
+  const result = sass.compile(join('src', 'ui.scss'));
+  await writeFile(join('dist', 'ui.css'), result.css);
 
   await build({
-    entryPoints: [join('src', 'interface.js')],
+    entryPoints: [join('src', 'ui.js')],
     bundle: true,
-    outfile: join('dist', 'interface.js'),
+    outfile: join('dist', 'ui.js'),
     loader: {
       ".js": "jsx"
     },
@@ -89,7 +89,7 @@ async function main() {
     background(),
     content(),
     assets(),
-    page(),
+    ui(),
   ]);
 }
 

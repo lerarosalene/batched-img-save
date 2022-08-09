@@ -1,0 +1,21 @@
+.download-button {
+  display: flex;
+  justify-content: center;
+  grid-column: span 3;
+  cursor: pointer;
+  font-size: 20px;
+
+  &__icon {
+    width: 1em;
+    height: 1em;
+
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-image: url("download.svg");
+  }
+
+  &__text {
+    text-decoration: underline;
+  }
+}
