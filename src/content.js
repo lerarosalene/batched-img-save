@@ -27,9 +27,10 @@ function handleMessage(data, _, respond) {
     const res = await fetch(window.location.href);
     const binary = await res.arrayBuffer();
     const data = new Uint8Array(binary);
+    const mime = res.headers.get('Content-Type');
 
     const response = {
-      imageResult: { name, data }
+      imageResult: { name, data, mime }
     };
 
     respond(encode(response));

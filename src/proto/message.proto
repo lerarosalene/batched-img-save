@@ -3,11 +3,17 @@ syntax = "proto3";
 message ImageResult {
   bytes data = 1;
   string name = 2;
+  string mime = 3;
+}
+
+message ImageList {
+  repeated ImageResult images = 1;
 }
 
 message Message {
   oneof type {
     bool imageRequest = 1;
     ImageResult imageResult = 2;
+    ImageList imageList = 3;
   }
 }

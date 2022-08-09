@@ -52,33 +52,84 @@ function findSafeName(name, knownNames) {
   }
 }
 
+class MessageBuffer {
+  constructor() {
+    this.port = null;
+    this.buffer = [];
+  }
+
+  setPort(port) {
+    this.port = port;
+    this.port.onDisconnect.addListener(() => {
+      if (this.port === port) {
+        this.port = null;
+      }
+    });
+    this.flush();
+  }
+
+  add(message) {
+    this.buffer.push(message);
+    this.flush();
+  }
+
+  flush() {
+    if (!this.port) {
+      return;
+    }
+
+    for (let message of this.buffer) {
+      this.port.postMessage(message);
+    }
+
+    this.buffer = [];
+  }
+}
+
+const buffer = new MessageBuffer();
+
+chrome.runtime.onConnect.addListener(port => {
+  buffer.setPort(port);
+});
+
 async function handleClicked() {
+  const interfaceTab = await chrome.tabs.create({
+    url: chrome.runtime.getURL('interface.html')
+  });
   const tabs = await chrome.tabs.query({ currentWindow: true });
 
   const responses = await Promise.all(
     tabs.map(tab => sendTabRequest(tab.id))
   );
 
-  let archive = new JSZip();
-  let knownNames = new Set();
-  
-  for (let response of responses) {
-    if (response.type !== 'imageResult') {
-      continue;
+  const message = {
+    imageList: {
+      images: responses.map(r => r.imageResult).filter(r => r)
     }
+  };
 
-    const { name, data } = response.imageResult;
-    const realName = findSafeName(name, knownNames);
+  buffer.add(encode(message));
 
-    archive.file(realName, data);
-  }
+  // let archive = new JSZip();
+  // let knownNames = new Set();
+  
+  // for (let response of responses) {
+  //   if (response.type !== 'imageResult') {
+  //     continue;
+  //   }
 
-  const result = await archive.generateAsync({ type: "base64" });
+  //   const { name, data } = response.imageResult;
+  //   const realName = findSafeName(name, knownNames);
 
-  await chrome.downloads.download({
-    filename: "archive.zip",
-    url: `data:application/zip;base64,${result}`,
-  });
+  //   archive.file(realName, data);
+  // }
+
+  // const result = await archive.generateAsync({ type: "base64" });
+
+  // await chrome.downloads.download({
+  //   filename: "archive.zip",
+  //   url: `data:application/zip;base64,${result}`,
+  // });
 }
 
 chrome.action.onClicked.addListener(handleClicked);

@@ -1,8 +1,10 @@
 import { readFile, writeFile, mkdir, copyFile } from 'fs/promises';
-import { join } from 'path';
+import { basename, dirname, join, resolve } from 'path';
 import Mustache from 'mustache';
 import YAML from 'yaml';
 import { build } from 'esbuild';
+import sass from 'sass';
+import { createCanvas, loadImage } from 'canvas';
 
 async function manifest() {
   const yamlTemplate = await readFile(join('src', 'manifest.yaml'), 'utf-8');
@@ -33,9 +35,51 @@ async function content() {
   });
 }
 
+async function buildPng(name, svgPath, size) {
+  const canvas = createCanvas();
+  canvas.width = size;
+  canvas.height = size;
+
+  const ctx = canvas.getContext('2d');
+  const img = await loadImage(svgPath);
+  ctx.drawImage(img, 0, 0, size, size);
+
+  const result = canvas.toBuffer();
+  const resultDir = dirname(resolve(name));
+  const lastDot = name.lastIndexOf(".");
+  const resultExt = lastDot > -1 ? name.substr(lastDot) : null;
+  const resultNamePrefix = resultExt ? basename(name, resultExt) : basename(name);
+  const resultName = resultNamePrefix + `-${size}x${size}`;
+  const resultPath = join(resultDir, resultName + (resultExt ?? ""));
+
+  await writeFile(resultPath, result);
+}
+
 async function assets() {
-  await copyFile(join('assets', 'icon-48x48.png'), join('dist', 'icon-48x48.png'));
-  await copyFile(join('assets', 'icon-96x96.png'), join('dist', 'icon-96x96.png'));
+  await Promise.all([
+    buildPng(join('dist', 'icon.png'), join('assets', 'icon.svg'), 48),
+    buildPng(join('dist', 'icon.png'), join('assets', 'icon.svg'), 96),
+    copyFile(join('assets', 'delete.svg'), join('dist', 'delete.svg')),
+    copyFile(join('assets', 'download.svg'), join('dist', 'download.svg')),
+  ])
+}
+
+async function page() {
+  await copyFile(join('src', 'interface.html'), join('dist', 'interface.html'));
+  const result = sass.compile(join('src', 'interface.scss'));
+  await writeFile(join('dist', 'interface.css'), result.css);
+
+  await build({
+    entryPoints: [join('src', 'interface.js')],
+    bundle: true,
+    outfile: join('dist', 'interface.js'),
+    loader: {
+      ".js": "jsx"
+    },
+    define: {
+      "process.env.NODE_ENV": JSON.stringify("production"),
+    },
+  });
 }
 
 async function main() {
@@ -45,6 +89,7 @@ async function main() {
     background(),
     content(),
     assets(),
+    page(),
   ]);
 }
 

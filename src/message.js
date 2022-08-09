@@ -17,7 +17,7 @@ export function encode(data) {
 export function decode(data) {
   const buf = toByteArray(data);
   const message = Message.decode(buf);
-  const object = Message.toObject(message, { oneofs: true });
+  const object = Message.toObject(message, { oneofs: true, arrays: true });
 
   return object;
 }
