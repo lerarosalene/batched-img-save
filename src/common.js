@@ -25,11 +25,11 @@ export function findSafeName(name, knownNames) {
 
   knownNames.add(createName(base, ext, suffixNum));
   return createName(base, ext, suffixNum);
+}
 
-  function createName(base, ext, suffixNum) {
-    if (suffixNum === undefined) {
-      return `${base}${ext}`;
-    }
-    return `${base}-${suffixNum}${ext}`;
+function createName(base, ext, suffixNum) {
+  if (suffixNum === undefined) {
+    return `${base}${ext}`;
   }
+  return `${base}-${suffixNum}${ext}`;
 }
