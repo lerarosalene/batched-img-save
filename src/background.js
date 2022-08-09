@@ -1,13 +1,14 @@
 import { decode, encode } from "./message";
 import { findSafeName } from "./common";
+import { API } from "./api";
 
 async function sendTabRequest(tabId) {
   try {
     const message = encode({ imageRequest: true });
-    const response = await chrome.tabs.sendMessage(tabId, message);
+    const response = await API.tabs.sendMessage(tabId, message);
 
     if (!response) {
-      return new Error(chrome.runtime.lastError);
+      return new Error(API.runtime.lastError);
     }
 
     const result = decode(response);
@@ -21,14 +22,14 @@ async function sendTabRequest(tabId) {
   }
 }
 
-chrome.runtime.onConnect.addListener(port => {
+API.runtime.onConnect.addListener(port => {
   port.onMessage.addListener(async data => {
     const message = decode(data);
     if (message.type !== "listRequest") {
       return;
     }
 
-    const tabs = await chrome.tabs.query({ currentWindow: true });
+    const tabs = await API.tabs.query({ currentWindow: true });
 
     const responses = await Promise.all(
       tabs.map(tab => sendTabRequest(tab.id))
@@ -61,9 +62,9 @@ chrome.runtime.onConnect.addListener(port => {
 });
 
 async function handleClicked() {
-  await chrome.tabs.create({
-    url: chrome.runtime.getURL('ui.html')
+  await API.tabs.create({
+    url: API.runtime.getURL('ui.html')
   });
 }
 
-chrome.action.onClicked.addListener(handleClicked);
+API.action.onClicked.addListener(handleClicked);

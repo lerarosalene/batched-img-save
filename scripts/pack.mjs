@@ -3,6 +3,8 @@ import { readdir, readFile, mkdir } from 'fs/promises';
 import { join } from "path";
 import { createWriteStream } from "fs";
 
+const BROWSER = process.env.BROWSER ?? "chrome";
+
 async function main() {
   await mkdir('release-artifacts', { recursive: true });
 
@@ -14,6 +16,7 @@ async function main() {
     archive.file(file, contents);
   }
 
+  const resultName = BROWSER === "chrome" ? "batched-img-save.zip" : "batched-img-save.xpi";
   const zipResult = createWriteStream(join('release-artifacts', 'batched-img-save.zip'));
   const ended = new Promise((resolve, reject) => {
     zipResult.on('close', resolve);

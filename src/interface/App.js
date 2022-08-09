@@ -5,6 +5,7 @@ import { Image } from './Image';
 import { DownloadButton } from './DownloadButton';
 import JSZip from 'jszip';
 import { findSafeName } from 'src/common';
+import { API } from 'src/api';
 
 const App = observer(() => {
   const handleDownload = useCallback(async () => {
@@ -19,7 +20,7 @@ const App = observer(() => {
     const content = await archive.generateAsync({ type: "blob" });
     const url = URL.createObjectURL(content);
 
-    await chrome.downloads.download({
+    await API.downloads.download({
       url: url,
       filename: "archive.zip",
     })

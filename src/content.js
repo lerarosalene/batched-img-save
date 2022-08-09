@@ -1,4 +1,5 @@
 import { encode, decode } from "./message";
+import { API } from "./api";
 
 function handleMessage(data, _, respond) {
   const message = decode(data);
@@ -42,4 +43,4 @@ function handleMessage(data, _, respond) {
   return true;
 }
 
-chrome.runtime.onMessage.addListener(handleMessage);
+API.runtime.onMessage.addListener(handleMessage);

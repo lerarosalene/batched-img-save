@@ -13,6 +13,16 @@ async function listReleases() {
   return lines.map(line => line.split('\t')[0]);
 }
 
+async function build(browser) {
+  await promisify(exec)('npm run build', {
+    env: { BROWSER: browser }
+  });
+
+  await promisify(exec)('npm run package', {
+    env: { BROWSER: browser }
+  });
+}
+
 async function main() {
   const releaseTag =  await readFile('RELEASE', 'utf-8');
   const existing = await listReleases();
@@ -25,8 +35,9 @@ async function main() {
 
   await promisify(exec)('npm ci');
   await promisify(exec)('npm run codegen');
-  await promisify(exec)('npm run build');
-  await promisify(exec)('npm run package');
+
+  await build("chrome");
+  await build("firefox");
 
   const artifacts = (await readdir('release-artifacts'))
     .map(item => join('release-artifacts', item));

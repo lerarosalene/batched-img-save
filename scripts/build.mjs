@@ -6,6 +6,17 @@ import { build } from 'esbuild';
 import sass from 'sass';
 import { createCanvas, loadImage } from 'canvas';
 
+const BROWSER_ENV = process.env.BROWSER ?? "chrome";
+
+const commonEsbuildArgs = {
+  define: {
+    BROWSER_ENV: JSON.stringify(BROWSER_ENV),
+    NODE_ENV: process.env.NODE_ENV ?? "production"
+  },
+  minify: true,
+  bundle: true,
+};
+
 async function manifest() {
   const yamlTemplate = await readFile(join('src', 'manifest.yaml'), 'utf-8');
   const packageData = JSON.parse(await readFile('package.json', 'utf-8'));
@@ -20,18 +31,16 @@ async function manifest() {
 async function background() {
   await build({
     entryPoints: [join('src', 'background.js')],
-    bundle: true,
-    minify: true,
     outfile: join('dist', 'background.js'),
+    ...commonEsbuildArgs,
   });
 }
 
 async function content() {
   await build({
     entryPoints: [join('src', 'content.js')],
-    bundle: true,
-    minify: true,
     outfile: join('dist', 'content.js'),
+    ...commonEsbuildArgs,
   });
 }
 
@@ -71,15 +80,11 @@ async function ui() {
 
   await build({
     entryPoints: [join('src', 'ui.js')],
-    bundle: true,
-    minify: true,
     outfile: join('dist', 'ui.js'),
     loader: {
       ".js": "jsx"
     },
-    define: {
-      "process.env.NODE_ENV": JSON.stringify("production"),
-    },
+    ...commonEsbuildArgs,
   });
 }
 
