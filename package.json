@@ -5,7 +5,8 @@
   "description": "Chrome Extension to save all images opened as tabs as .zip file in one clcik",
   "scripts": {
     "build": "node scripts/build.mjs",
-    "codegen": "node scripts/codegen.mjs"
+    "codegen": "node scripts/codegen.mjs",
+    "package": "node scripts/pack.mjs"
   },
   "keywords": [],
   "author": "Larissa Rosalene <lerarosalene@outlook.com>",
