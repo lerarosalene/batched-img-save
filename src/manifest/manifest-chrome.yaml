@@ -1,0 +1,11 @@
+manifest_version: 3
+
+background:
+  service_worker: background.js
+
+host_permissions:
+  - "*://*/*"
+
+action:
+  default_icon:
+    96: icon-96x96.png

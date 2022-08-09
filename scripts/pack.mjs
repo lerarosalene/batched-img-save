@@ -17,7 +17,7 @@ async function main() {
   }
 
   const resultName = BROWSER === "chrome" ? "batched-img-save.zip" : "batched-img-save.xpi";
-  const zipResult = createWriteStream(join('release-artifacts', 'batched-img-save.zip'));
+  const zipResult = createWriteStream(join('release-artifacts', resultName));
   const ended = new Promise((resolve, reject) => {
     zipResult.on('close', resolve);
     zipResult.on('error', reject);

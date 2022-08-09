@@ -1,6 +1,6 @@
 import { decode, encode } from "./message";
 import { findSafeName } from "./common";
-import { API } from "./api";
+import { ACTION, API } from "./api";
 
 async function sendTabRequest(tabId) {
   try {
@@ -67,4 +67,4 @@ async function handleClicked() {
   });
 }
 
-API.action.onClicked.addListener(handleClicked);
+ACTION.onClicked.addListener(handleClicked);

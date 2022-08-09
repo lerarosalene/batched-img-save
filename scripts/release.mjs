@@ -27,7 +27,7 @@ async function main() {
   const releaseTag =  await readFile('RELEASE', 'utf-8');
   const existing = await listReleases();
 
-  if (existing.includes(releaseTag)) {
+  if (existing.includes(releaseTag) && process.env.NODE_ENV === "production") {
     return;
   }
 
@@ -42,7 +42,9 @@ async function main() {
   const artifacts = (await readdir('release-artifacts'))
     .map(item => join('release-artifacts', item));
 
-  await gh('release', 'create', releaseTag, ...artifacts, '--notes', releaseNotes);
+  if (process.env.NODE_ENV === "production") {
+    await gh('release', 'create', releaseTag, ...artifacts, '--notes', releaseNotes);
+  }
 }
 
 main().catch(error => {

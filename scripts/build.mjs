@@ -17,15 +17,22 @@ const commonEsbuildArgs = {
   bundle: true,
 };
 
-async function manifest() {
-  const yamlTemplate = await readFile(join('src', 'manifest.yaml'), 'utf-8');
+async function loadManifestYaml(path) {
+  const yamlTemplate = await readFile(path, 'utf-8');
   const packageData = JSON.parse(await readFile('package.json', 'utf-8'));
 
   const yamlFile = Mustache.render(yamlTemplate, packageData);
   const manifestData = YAML.parse(yamlFile);
-  const manifest = JSON.stringify(manifestData, null, 2);
 
-  await writeFile(join('dist', 'manifest.json'), manifest);
+  return manifestData;
+}
+
+async function manifest() {
+  const common = await loadManifestYaml(join('src', 'manifest', 'manifest-common.yaml'));
+  const browser = await loadManifestYaml(join('src', 'manifest', `manifest-${BROWSER_ENV}.yaml`));
+
+  const manifestData = Object.assign({}, common, browser);
+  await writeFile(join('dist', 'manifest.json'), JSON.stringify(manifestData, null, 2));
 }
 
 async function background() {
