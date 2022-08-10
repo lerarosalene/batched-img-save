@@ -11,10 +11,11 @@ const BROWSER_ENV = process.env.BROWSER ?? "chrome";
 const commonEsbuildArgs = {
   define: {
     BROWSER_ENV: JSON.stringify(BROWSER_ENV),
-    NODE_ENV: process.env.NODE_ENV ?? "production"
+    "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV ?? "production"),
   },
   minify: true,
   bundle: true,
+  tsconfig: "jsconfig.json" 
 };
 
 async function loadManifestYaml(path) {

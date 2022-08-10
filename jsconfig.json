@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
     "paths": {
-      "proto/*": ["src/__generated/*"]
+      "proto/*": ["src/__generated/*"],
+      "@protobufjs/inquire": ["src/inquire"]
     },
     "baseUrl": "."
   }
