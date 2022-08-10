@@ -16,7 +16,7 @@ async function main() {
     archive.file(file, contents);
   }
 
-  const resultName = BROWSER === "chrome" ? "batched-img-save.zip" : "batched-img-save.xpi";
+  const resultName = BROWSER === "chrome" ? "batched-img-save.zip" : "batched-img-save-unsigned.xpi";
   const zipResult = createWriteStream(join('release-artifacts', resultName));
   const ended = new Promise((resolve, reject) => {
     zipResult.on('close', resolve);

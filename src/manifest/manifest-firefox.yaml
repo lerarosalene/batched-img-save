@@ -7,3 +7,7 @@ background:
 browser_action:
   default_icon:
     96: icon-96x96.png
+
+browser_specific_settings:
+  gecko:
+    id: batch-image-saver@lerarosalene.github.io
