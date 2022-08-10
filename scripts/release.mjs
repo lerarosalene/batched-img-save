@@ -44,7 +44,7 @@ async function signAndPublish() {
     throw new Error('No resulting .xpi found');
   }
 
-  const version = JSON.parse(await readFile('package.json', 'utf-8'));
+  const version = JSON.parse(await readFile('package.json', 'utf-8')).version;
   const name = `batch-image-saver-signed-${version}.xpi`;
 
   await mkdir('release-artifacts', { recursive: true });
