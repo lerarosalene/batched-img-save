@@ -9,7 +9,7 @@ Chrome:
 - unpack archive, install as unpacked extension from `chrome://extensions` page
 
 Firefox: 
-- open [latest release](https://github.com/lerarosalene/batched-img-save/releases/tag/v1.1.3)
+- open [latest release](https://github.com/lerarosalene/batched-img-save/releases/latest/)
 - click batch-image-saver-signed-{version}.xpi to automatically install it
 
 # Build it yourself
