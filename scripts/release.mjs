@@ -85,7 +85,7 @@ async function main() {
     .map(item => join('release-artifacts', item));
 
   if (process.env.NODE_ENV === "production") {
-    await gh('release', 'create', releaseTag, ...artifacts, '--notes', releaseNotes);
+    await gh('release', 'create', releaseTag, ...artifacts, '--notes', releaseNotes, '-t', releaseTag);
   }
 }
 
