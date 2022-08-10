@@ -4,9 +4,13 @@ Chrome extension to download all images opened as tabs in one archive in one cli
 
 # Install
 
-Download release from releases section (.zip for Chrome / .xpi for Firefox) and
-- Chrome: unpack archive, install as unpacked extension from `chrome://extensions` page
-- Firefox: install .xpi file from `about:debugging`
+Chrome:
+- download batch-image-saver.zip from [latest release](https://github.com/lerarosalene/batched-img-save/releases/latest/)
+- unpack archive, install as unpacked extension from `chrome://extensions` page
+
+Firefox: 
+- open [latest release](https://github.com/lerarosalene/batched-img-save/releases/tag/v1.1.3)
+- click batch-image-saver-signed-{version}.xpi to automatically install it
 
 # Build it yourself
 
@@ -16,5 +20,10 @@ Download release from releases section (.zip for Chrome / .xpi for Firefox) and
 - `npm run build`
 - `npm run package`
 
-Release artifacts will be in `release-artifacts` folder
+Environment variable `BROWSER` controls which version of extension is built. Possible values:
+- `chrome` (default)
+- `firefox`
 
+
+
+Release artifacts will be in `release-artifacts` folder
