@@ -20,7 +20,7 @@ Firefox:
 - `npm run build`
 - `npm run package`
 
-Environment variable `BROWSER` controls which version of extension is built. It affects `build`, `package` and `release` scripts. Possible values:
+Environment variable `BROWSER` controls which version of extension is built. It affects `build` and `package` scripts. Possible values:
 - `chrome` (default)
 - `firefox`
 
