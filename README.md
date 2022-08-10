@@ -20,10 +20,12 @@ Firefox:
 - `npm run build`
 - `npm run package`
 
-Environment variable `BROWSER` controls which version of extension is built. Possible values:
+Environment variable `BROWSER` controls which version of extension is built. It affects `build`, `package` and `release` scripts. Possible values:
 - `chrome` (default)
 - `firefox`
 
+
+To sign firefox package with your own keys refer to `scripts/release.mjs` file, `signAndPublish` function to see how it is done.
 
 
 Release artifacts will be in `release-artifacts` folder
