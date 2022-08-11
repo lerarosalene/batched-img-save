@@ -1,3 +1,5 @@
+![release badge](https://github.com/lerarosalene/batched-img-save/actions/workflows/release.yaml/badge.svg)
+
 # Batch images saver
 
 Chrome extension to download all images opened as tabs in one archive in one click
