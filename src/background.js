@@ -5,7 +5,18 @@ import { ACTION, API } from "./api";
 async function sendTabRequest(tabId) {
   try {
     const message = encode({ imageRequest: true });
-    const response = await API.tabs.sendMessage(tabId, message);
+
+    const port = API.tabs.connect(tabId);
+    const responsePromise = new Promise((resolve, reject) => {
+      port.onMessage.addListener(data => {
+        port.disconnect();
+        resolve(data);
+      });
+      port.onDisconnect.addListener(reject);
+    });
+
+    port.postMessage(message);
+    const response = await responsePromise;
 
     if (!response) {
       return new Error(API.runtime.lastError);

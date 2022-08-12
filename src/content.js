@@ -1,33 +1,33 @@
 import { encode, decode } from "./message";
 import { API } from "./api";
 
-function handleMessage(data, _, respond) {
-  const message = decode(data);
+API.runtime.onConnect.addListener(port => {
+  port.onMessage.addListener(async encoded => {
+    const message = decode(encoded);
 
-  if (message.type !== 'imageRequest') {
-    respond(null);
-    return true;
-  }
+    if (message.type !== 'imageRequest') {
+      port.disconnect();
+      return;
+    }
 
-  const mainImage = document.body.querySelector('img');
-  if (!mainImage) {
-    respond(null);
-    return true;
-  }
+    const mainImage = document.body.querySelector('img');
+    if (!mainImage) {
+      port.disconnect();
+      return;
+    }
 
-  const isImageTab = mainImage.src === window.location.href
-    && document.body.children.length === 1
-    && document.body.firstElementChild === mainImage;
+    const isImageTab = mainImage.src === window.location.href
+      && document.body.children.length === 1
+      && document.body.firstElementChild === mainImage;
 
-  if (!isImageTab) {
-    respond(null);
-    return true;
-  }
+    if (!isImageTab) {
+      port.disconnect();
+      return;
+    }
 
-  const url = new URL(mainImage.src);
-  const name = url.pathname.substring(url.pathname.lastIndexOf('/') + 1);
+    const url = new URL(mainImage.src);
+    const name = url.pathname.substring(url.pathname.lastIndexOf('/') + 1);
 
-  (async () => {
     const res = await fetch(window.location.href);
     const binary = await res.arrayBuffer();
     const data = new Uint8Array(binary);
@@ -37,10 +37,6 @@ function handleMessage(data, _, respond) {
       imageResult: { name, data, mime }
     };
 
-    respond(encode(response));
-  })();
-
-  return true;
-}
-
-API.runtime.onMessage.addListener(handleMessage);
+    port.postMessage(encode(response));
+  });
+});
