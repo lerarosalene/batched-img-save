@@ -1,6 +1,7 @@
 import { readdir, copyFile, mkdir, readFile } from "node:fs/promises"
 import { promisify } from "node:util";
 import { exec } from "node:child_process";
+import { join } from "node:path";
 
 async function sign() {
   await promisify(exec)(
