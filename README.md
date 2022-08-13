@@ -1,4 +1,4 @@
-![release badge](https://github.com/lerarosalene/batched-img-save/actions/workflows/release.yaml/badge.svg)
+[![build badge](https://github.com/lerarosalene/batched-img-save/actions/workflows/build.yaml/badge.svg)](https://github.com/lerarosalene/batched-img-save/actions/workflows/build.yaml)
 
 # Batch images saver
 
