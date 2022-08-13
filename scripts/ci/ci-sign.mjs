@@ -1,14 +1,7 @@
 import { readdir, unlink, copyFile, mkdir } from "node:fs/promises"
+import { promisify } from "node:util";
 
 async function sign() {
-  try {
-    const webExtArtsOld = await readdir('web-ext-artifacts');
-    for (let file of webExtArtsOld) {
-      const path = join('web-ext-artifacts', file);
-      await unlink(path);
-    }
-  } catch (error) {}
-
   await promisify(exec)(
     `npx web-ext sign -s dist/firefox --api-key "${process.env.MOZ_API_KEY}" --api-secret "${process.env.MOZ_API_SECRET}"`
   );
