@@ -12,7 +12,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - runs: "npm ci"
-      - runs: "npm run codegen"
-      - runs: "node scripts/ci/ci-clear.mjs"
-      - runs: "node scripts/ci/ci-build.mjs"
+      - run: "npm ci"
+      - run: "npm run codegen"
+      - run: "node scripts/ci/ci-clear.mjs"
+      - run: "node scripts/ci/ci-build.mjs"

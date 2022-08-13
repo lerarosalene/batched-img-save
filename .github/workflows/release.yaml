@@ -12,16 +12,16 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - runs: "npm ci"
-      - runs: "npm run codegen"
-      - runs: "node scripts/ci/ci-clear.mjs"
-      - runs: "node scripts/ci/ci-build.mjs"
+      - run: "npm ci"
+      - run: "npm run codegen"
+      - run: "node scripts/ci/ci-clear.mjs"
+      - run: "node scripts/ci/ci-build.mjs"
         env:
           NODE_ENV: "production"
-      - runs: "node scripts/ci/ci-sign.mjs"
+      - run: "node scripts/ci/ci-sign.mjs"
         env:
           MOZ_API_KEY: ${{ secrets.MOZ_API_KEY }}
           MOZ_API_SECRET: ${{ secrets.MOZ_API_SECRET }}
-      - runs: "npm run release"
+      - run: "npm run release"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
