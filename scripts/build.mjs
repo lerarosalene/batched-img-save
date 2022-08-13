@@ -8,6 +8,8 @@ import { createCanvas, loadImage } from 'canvas';
 
 const BROWSER_ENV = process.env.BROWSER ?? "chrome";
 
+const DIST_FOLDER = join("dist", BROWSER_ENV);
+
 const commonEsbuildArgs = {
   define: {
     BROWSER_ENV: JSON.stringify(BROWSER_ENV),
@@ -33,13 +35,13 @@ async function manifest() {
   const browser = await loadManifestYaml(join('src', 'manifest', `manifest-${BROWSER_ENV}.yaml`));
 
   const manifestData = Object.assign({}, common, browser);
-  await writeFile(join('dist', 'manifest.json'), JSON.stringify(manifestData, null, 2));
+  await writeFile(join(DIST_FOLDER, 'manifest.json'), JSON.stringify(manifestData, null, 2));
 }
 
 async function background() {
   await build({
     entryPoints: [join('src', 'background.js')],
-    outfile: join('dist', 'background.js'),
+    outfile: join(DIST_FOLDER, 'background.js'),
     ...commonEsbuildArgs,
   });
 }
@@ -47,7 +49,7 @@ async function background() {
 async function content() {
   await build({
     entryPoints: [join('src', 'content.js')],
-    outfile: join('dist', 'content.js'),
+    outfile: join(DIST_FOLDER, 'content.js'),
     ...commonEsbuildArgs,
   });
 }
@@ -74,21 +76,21 @@ async function buildPng(name, svgPath, size) {
 
 async function assets() {
   await Promise.all([
-    buildPng(join('dist', 'icon.png'), join('assets', 'icon.svg'), 48),
-    buildPng(join('dist', 'icon.png'), join('assets', 'icon.svg'), 96),
-    copyFile(join('assets', 'delete.svg'), join('dist', 'delete.svg')),
-    copyFile(join('assets', 'download.svg'), join('dist', 'download.svg')),
+    buildPng(join(DIST_FOLDER, 'icon.png'), join('assets', 'icon.svg'), 48),
+    buildPng(join(DIST_FOLDER, 'icon.png'), join('assets', 'icon.svg'), 96),
+    copyFile(join('assets', 'delete.svg'), join(DIST_FOLDER, 'delete.svg')),
+    copyFile(join('assets', 'download.svg'), join(DIST_FOLDER, 'download.svg')),
   ])
 }
 
 async function ui() {
-  await copyFile(join('src', 'ui.html'), join('dist', 'ui.html'));
+  await copyFile(join('src', 'ui.html'), join(DIST_FOLDER, 'ui.html'));
   const result = sass.compile(join('src', 'ui.scss'));
-  await writeFile(join('dist', 'ui.css'), result.css);
+  await writeFile(join(DIST_FOLDER, 'ui.css'), result.css);
 
   await build({
     entryPoints: [join('src', 'ui.js')],
-    outfile: join('dist', 'ui.js'),
+    outfile: join(DIST_FOLDER, 'ui.js'),
     loader: {
       ".js": "jsx"
     },
@@ -97,7 +99,7 @@ async function ui() {
 }
 
 async function main() {
-  await mkdir('dist', { recursive: true });
+  await mkdir(DIST_FOLDER, { recursive: true });
   await Promise.all([
     manifest(),
     background(),
