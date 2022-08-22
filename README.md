@@ -26,6 +26,6 @@ Environment variable `BROWSER` controls which version of extension is built. It 
 - `chrome` (default)
 - `firefox`
 
-To sign firefox package with your own keys refer to `scripts/ci-sign.mjs` file to see how it is done.
+To sign firefox package with your own keys refer to `scripts/ci/ci-sign.mjs` file to see how it is done.
 
 Release artifacts will be in `release-artifacts` folder
